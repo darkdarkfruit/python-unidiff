@@ -33,6 +33,10 @@ def _parse_hunk(diff, source_start, source_len, target_start, target_len):
             elif action == '-':
                 hunk.append_deleted_line(original_line)
                 deleting += 1
+               
+            # If invoked with 'diff -u0 file_a_name file_b_name', then modified lines always keep to 0
+            # In theory, there can be combining only deleting lines and adding lines in diff files.
+            # 'diff -u0 file_a_name file_b_name' --> generate a unified diff whith no contexts
             elif action == ' ':
                 hunk.append_context_line(original_line)
                 hunk.add_to_modified_counter(modified)
